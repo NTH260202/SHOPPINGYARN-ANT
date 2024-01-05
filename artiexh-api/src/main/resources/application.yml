@@ -1,0 +1,114 @@
+socket:
+  port: ${SOCKET_PORT:}
+  host: ${SOCKET_HOST:}
+spring:
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 25MB
+  application:
+    name: artiexh-api
+  datasource:
+    url: jdbc:mariadb://${DB_URL:}/${DB_NAME:}
+    username: ${DB_USERNAME:}
+    password: ${DB_PASSWORD:}
+    hikari:
+      auto-commit: false
+      maximum-pool-size: ${DB_HIKARI_MAX_POOL:3}
+      minimum-idle: ${DB_HIKARI_MIN_POOL:1}
+  jpa:
+    open-in-view: false
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+    show-sql: false
+  data:
+    redis:
+      host: ${REDIS_HOST:}
+      port: ${REDIS_PORT:}
+      password: ${REDIS_PASSWORD:}
+      database: ${REDIS_DATABASE:}
+  jackson:
+    default-property-inclusion: non_null
+  main:
+    allow-circular-references: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${OAUTH2_GOOGLE_CLIENT_ID}
+            clientSecret: ${OAUTH2_GOOGLE_CLIENT_SECRET}
+            redirectUri: "{baseUrl}/api/v1/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+opensearch:
+  uris: ${OPENSEARCH_URIS:}
+  username: ${OPENSEARCH_USERNAME:}
+  password: ${OPENSEARCH_PASSWORD:}
+server:
+  error:
+    include-message: always
+    include-stacktrace: never
+    whitelabel:
+      enabled: false
+  port: ${API_SERVER_PORT:}
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    path: /swagger-ui
+    disable-swagger-default-url: true
+    csrf:
+      enabled: true
+    operations-sorter: alpha
+    tags-sorter: alpha
+  use-fqn: true
+  writer-with-order-by-keys: true
+artiexh:
+  payment:
+    vnp:
+      tmn-code: ${TMN_CODE:}
+      version: ${VNP_VERSION:}
+      command: ${PAY:}
+      return-url: ${RETURN_URL:}
+      url: ${VNP_URL:}
+      secret-key: ${VNP_SECRET_KEY:}
+  aws:
+    s3:
+      public-bucket-name: ${PUBLIC_BUCKET_NAME:}
+      private-bucket-name: ${PRIVATE_BUCKET_NAME:}
+      access-key: ${ACCESS_KEY:}
+      secret-key: ${SECRET_KEY:}
+      region: ${REGION:}
+  security:
+    admin:
+      id: ${ADMIN_ID}
+    jwt:
+      secret-key: ${JWT_SECRET_KEY}
+      issuer: http://artiexh.com/api/
+      audiences:
+        - http://artiexh.com/
+        - http://localhost:8080/
+        - http://localhost:3000/
+      access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION:}
+      refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION:}
+    cors:
+      allowed-origins: ${CORS_ALLOWED_ORIGINS:}
+      allowed-methods: ${CORS_ALLOWED_METHODS:}
+      allowed-headers: ${CORS_ALLOWED_HEADERS:}
+      allow-credentials: ${CORS_ALLOW_CREDENTIALS:}
+    recent_oauth2_fail_id:
+      expiration: ${CACHE_RECENT_OAUTH2_FAIL_ID_EXPIRE:}
+  ghtk:
+    base-url: ${GHTK_BASE_URL:}
+    token: ${GHTK_TOKEN:}
+  file-server:
+    path: ${FILE_SERVER_PATH:}
+cron:
+  close-expired-sale-campaigns: ${CRON_CLOSE_EXPIRED_SALE_CAMPAIGNS:}
+  close-timeout-orders: ${CRON_CLOSE_TIMEOUT_ORDERS:}
